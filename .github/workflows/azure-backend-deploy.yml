@@ -41,9 +41,9 @@ jobs:
     - name: Prepare Laravel application
       working-directory: ./backend
       run: |
-        # Create required directories
+        # Create required directories (excluding storage/app/public and storage/app/private - they're Azure mounts)
         mkdir -p storage/framework/cache storage/framework/sessions storage/framework/views storage/logs
-        mkdir -p storage/app/public storage/app/htmlpurifier
+        mkdir -p storage/app/htmlpurifier
         mkdir -p bootstrap/cache
         
         # Set permissions
@@ -60,6 +60,9 @@ jobs:
         rm -rf .git/
         rm -rf node_modules/
         rm -f .env.example .env.testing phpunit.xml
+        
+        # Remove storage/app/public and storage/app/private (they're Azure Storage Mounts - read-only during deployment)
+        rm -rf storage/app/public storage/app/private
         
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v3
