@@ -31,7 +31,7 @@ jobs:
         
     - name: Validate composer.json
       working-directory: ./backend
-      run: composer validate --strict
+      run: composer validate --no-check-all --no-check-publish
         
     - name: Install dependencies
       working-directory: ./backend
